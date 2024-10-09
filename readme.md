@@ -1,11 +1,12 @@
-# IfNikkiRPC v1.0.0
+# IfNikkiRPC
 
 ![Discord Rich Presence](./img/rpc.PNG)
 
 # 概要
-インフィニティニキの起動を検知し、Discordのアクティビティに表示するプログラムです。現在UIDの表示に対応しています（非表示設定も可能です）。
-アプリケーションはタスクトレイに格納され、右クリックの Exit を押すことでプログラムを終了できます。
-また、動作状況はlogフォルダ先のログファイルに記述されます。
+インフィニティニキの起動を検知し、Discordのアクティビティに表示するプログラムです。<br>
+現在**UIDの表示**に対応しています（非表示設定も可能です）。<br>
+アプリケーションはタスクトレイに格納され、右クリックの Exit を押すことでプログラムを終了できます。<br>
+また、動作状況はlogフォルダ先の**ログファイル**に記述されます。
 
 # アクティビティ設定
 GUIは無いため、フォルダに同梱されている**config.json**をメモ帳等のアプリで開き、直接編集してください。
@@ -19,7 +20,7 @@ GUIは無いため、フォルダに同梱されている**config.json**をメ�
 UIDの表示可否を設定します。<br>
 「**true**」または「**false**」で指定します。<br>
 trueの場合は、Resourceのファイル自動検出でUIDを表示します。<br>
-falseの場合、Discord上には「****」と表示されます。
+falseの場合、Discord上には「__****__」と表示されます。
 
 ## BtnLabel
 Discordアクティビティの**ボタン名**を設定します。
@@ -36,4 +37,13 @@ https://github.com/yuzune27/IfnikkiRPC
 
 # 注意事項
 * 自分用に作ったアプリなので、デバッグをほとんど行っておらず、<INS>動作保証はできません</INS>。
-* インフィニティニキの今後のバージョンアップデートにより動作しなくなる可能性があります。
+* インフィニティニキの今後のバージョンアップデートにより<INS>動作しなくなる可能性</INS>があります。
+
+# 参考資料
+- [StarRailDiscordRPC](https://github.com/Gattxxa/StarRailDiscordRPC)
+- [Wuthering-Waves-RPC](https://github.com/xAkre/Wuthering-Waves-RPC)
+- [Windows のタスクトレイに Python アプリを常駐させ定期的にプログラムを実行する](https://qiita.com/bassan/items/3025eeb6fd2afa03081b)
+- [discord-rich-presence](https://pypi.org/project/discord-rich-presence/)
+- [PyInstallerで実行ファイルにリソースを埋め込み](https://qiita.com/firedfly/items/f6de5cfb446da4b53eeb)
+
+Thank you!
