@@ -18,7 +18,7 @@ GUIは無いため、フォルダに同梱されている**config.json**をメ�
 
 ## UIDVisible
 UIDの表示可否を設定します。<br>
-「**true**」または「**false**」で指定します。<br>
+「`true`」または「`false`」で指定します。<br>
 trueの場合は、Resourceのファイル自動検出でUIDを表示します。<br>
 falseの場合、Discord上には「__****__」と表示されます。
 
@@ -30,7 +30,7 @@ Discordアクティビティの**ボタンURL**を設定します。
 
 # アップデート方法
 自動アップデート機能を搭載していないため、各自**GitHubページ**を確認してください。
-https://github.com/yuzune27/IfnikkiRPC
+https://github.com/yuzune27/IfnikkiRPC/releases
 
 # アンインストール方法
 **ifnikkiRPC.exe**を削除してください。
