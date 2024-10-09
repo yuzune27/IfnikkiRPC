@@ -15,7 +15,6 @@ import configparser
 
 appinfo = configparser.ConfigParser()
 appinfo.read("appinfo.ini", encoding="utf-8")
-name = appinfo["DEFAULT"]["AppName"]
 version = appinfo["DEFAULT"]["AppVersion"]
 
 def resource_path(relative_path):
@@ -33,7 +32,7 @@ class taskTray:
             MenuItem("Exit", self.stop_program),
         )
 
-        self.icon = Icon(name=name, title=name, icon=image, menu=menu)
+        self.icon = Icon(name="ifnikkiRPC", title="ifnikkiRPC", icon=image, menu=menu)
 
     def stop_program(self, icon):
         self.status = False
@@ -83,7 +82,7 @@ def rpc(details, label, url):
         },
         "assets": {
             "large_image": "ifnikkik",
-            "large_text": name,
+            "large_text": "ifnikkiRPC",
             "small_image": "ifnsmallk",
             "small_text": version
         },
