@@ -8,12 +8,20 @@ import json
 from pystray import Icon, Menu, MenuItem
 from PIL import Image
 from threading import Thread
+import sys
+from datetime import datetime
+
+
+def resource_path(relative_path):
+    if hasattr(sys, '_MEIPASS'):
+        return os.path.join(sys._MEIPASS, relative_path)
+    return os.path.join(os.path.abspath("."), relative_path)
 
 class taskTray:
     def __init__(self):
         self.status = False
 
-        image = Image.open("./img/icon.png")
+        image = Image.open(resource_path("icon.PNG"))
         menu = Menu(
             MenuItem("Version: 1.0.0", None),
             MenuItem("Exit", self.stop_program),
@@ -91,11 +99,12 @@ def rpc(details, label, url):
             else:
                 break
 
-def log_write(status, app, content):
+def log_write(dt, status, app, content):
     os.makedirs("log", exist_ok=True)
 
     logger = logging.getLogger(__name__)
-    logging.basicConfig(filename="./log/rpc.log", encoding="utf-8", level=logging.INFO, format="[%(asctime)s] %(message)s")
+    log_path = f"./log/rpc{dt}.log"
+    logging.basicConfig(filename=log_path, encoding="utf-8", level=logging.INFO, format="[%(asctime)s] %(message)s")
     if status == "ok":
         if app:
             info_text = f"InfinityNikki is running. Executes an RPC function."
@@ -103,25 +112,27 @@ def log_write(status, app, content):
             info_text = f"InfinityNikki is not running. waiting..."
         logger.info(info_text)
     elif status == "error":
+        taskTray().stop_program(taskTray().icon)
         logger.error(f"Unexpected error occurred.\n{content}")
 
 
 def app_run():
+    dt_now = datetime.now().strftime("%Y%m%d%H%M%S%f")
     try:
         details, label, url = get_config()
     except Exception as e:
-        log_write(status="error", app=None, content=e)
+        log_write(dt=dt_now, status="error", app=None, content=e)
         return
     while True:
         try:
             if process_check():
-                log_write(status="ok", app=True, content=None)
+                log_write(dt=dt_now, status="ok", app=True, content=None)
                 rpc(details, label, url)
             else:
-                log_write(status="ok", app=False, content=None)
+                log_write(dt=dt_now, status="ok", app=False, content=None)
             time.sleep(15)
         except Exception as e:
-            log_write(status="error", app=None, content=e)
+            log_write(dt=dt_now, status="error", app=None, content=e)
             break
 
 
