@@ -10,7 +10,13 @@ from PIL import Image
 from threading import Thread
 import sys
 from datetime import datetime
+import configparser
 
+
+appinfo = configparser.ConfigParser()
+appinfo.read("appinfo.ini", encoding="utf-8")
+name = appinfo["DEFAULT"]["AppName"]
+version = appinfo["DEFAULT"]["AppVersion"]
 
 def resource_path(relative_path):
     if hasattr(sys, '_MEIPASS'):
@@ -23,11 +29,11 @@ class taskTray:
 
         image = Image.open(resource_path("icon.PNG"))
         menu = Menu(
-            MenuItem("Version: 1.0.0", None),
+            MenuItem(f"Version: {version}", None),
             MenuItem("Exit", self.stop_program),
         )
 
-        self.icon = Icon(name="ifnikkiRPC", title="ifnikkiRPC", icon=image, menu=menu)
+        self.icon = Icon(name=name, title=name, icon=image, menu=menu)
 
     def stop_program(self, icon):
         self.status = False
@@ -68,33 +74,37 @@ def process_check():
 
 def rpc(details, label, url):
     cid = "1293228317943529483"
-    with Presence(cid) as presence:
-        print("Connected")
-        presence.set(
-            {
-                "details": details,
-                "timestamps": {
-                    "start": int(time.time())
-                },
-                "assets": {
-                    "large_image": "ifnikkik",
-                    "large_text": "ifnikkiRPC",
-                    "small_image": "ifnsmallk",
-                    "small_text": "1.0.0",
-                },
-                "buttons": [
-                    {
-                        "label": label,
-                        "url": url
-                    }
-                ]
-            },
+    start_time = int(time.time())
 
-        )
-        print("Updated")
+    data = [{
+        "details": details,
+        "timestamps": {
+            "start": start_time
+        },
+        "assets": {
+            "large_image": "ifnikkik",
+            "large_text": name,
+            "small_image": "ifnsmallk",
+            "small_text": version
+        },
+        "buttons": [
+            {
+                "label": label,
+                "url": url
+            }
+        ]
+    }, ]
+    with Presence(cid) as presence:
+        presence.set(data[0])
 
         while True:
             if process_check():
+                if (details, label, url) != get_config():
+                    details, label, url = get_config()
+                    data[0]["details"] = details
+                    data[0]["buttons"][0]["label"] = label
+                    data[0]["buttons"][0]["url"] = url
+                    presence.set(data[0])
                 time.sleep(15)
             else:
                 break
