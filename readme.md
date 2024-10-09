@@ -28,6 +28,16 @@ Discordアクティビティの**ボタン名**を設定します。
 ## BtnUrl
 Discordアクティビティの**ボタンURL**を設定します。
 
+## 例
+```json
+{
+  "Resource": "D:\\Program Files\\InfinityNikki\\",
+  "UIDVisible": true,
+  "BtnLabel": "公式サイト",
+  "BtnUrl": "https://infinitynikki.infoldgames.com/ja/home"
+}
+```
+
 # アップデート方法
 自動アップデート機能を搭載していないため、各自**GitHubページ**を確認してください。
 https://github.com/yuzune27/IfnikkiRPC/releases
