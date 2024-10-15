@@ -11,15 +11,13 @@
 # アクティビティ設定
 GUIは無いため、フォルダに同梱されている**config.json**をメモ帳等のアプリで開き、直接編集してください。
 
-## Resource
-現在、インストール先フォルダのファイルからUIDを自動検出する手法を取っています。<br>
-インフィニティニキのゲームリソースが保存されているフォルダを絶対パスで指定します。<br>
-ディレクトリの移動は**バックスラッシュ2つ**「`\\`」を使ってください。
+## UID
+UIDを数字で入力してください。この項目ではダブルクォーテーション「`""`」は不要です。
 
 ## UIDVisible
 UIDの表示可否を設定します。<br>
-「`true`」または「`false`」で指定します。<br>
-trueの場合は、Resourceのファイル自動検出でUIDを表示します。<br>
+「`true`」または「`false`」で指定してください。<br>
+trueの場合は、UIDをそのまま表示します。<br>
 falseの場合、Discord上には「__****__」と表示されます。
 
 ## BtnLabel
@@ -28,7 +26,27 @@ Discordアクティビティの**ボタン名**を設定します。
 ## BtnUrl
 Discordアクティビティの**ボタンURL**を設定します。
 
+## （削除済み機能）
+<details>
+<summary>Resource(~v1.1.0)</summary>
+インストール先フォルダのファイルからUIDを自動検出する手法を取っています。<br>
+インフィニティニキのゲームリソースが保存されているフォルダを絶対パスで指定します。<br>
+ディレクトリの移動は**バックスラッシュ2つ**「`\\`」を使ってください。
+</details>
+
 ## 例
+```json
+{
+  "UID": 901940024,
+  "UIDVisible": true,
+  "BtnLabel": "公式サイト",
+  "BtnUrl": "https://infinitynikki.infoldgames.com/ja/home"
+}
+```
+
+<details>
+<summary>~v1.1.0</summary>
+
 ```json
 {
   "Resource": "D:\\Program Files\\InfinityNikki\\",
@@ -37,6 +55,8 @@ Discordアクティビティの**ボタンURL**を設定します。
   "BtnUrl": "https://infinitynikki.infoldgames.com/ja/home"
 }
 ```
+
+</details>
 
 # アップデート方法
 自動アップデート機能を搭載していないため、各自**GitHubページ**を確認してください。

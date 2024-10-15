@@ -1,5 +1,4 @@
 import os
-import re
 from discordrp import Presence
 import time
 import psutil
@@ -12,10 +11,11 @@ import sys
 from datetime import datetime
 import configparser
 
-
-appinfo = configparser.ConfigParser()
-appinfo.read("appinfo.ini", encoding="utf-8")
-version = appinfo["DEFAULT"]["AppVersion"]
+def read_ini():
+    conf = configparser.ConfigParser()
+    path = sys.argv[0].replace("ifnikkiRPC.exe", "appinfo.ini")  # .replace("main.py", "appinfo.ini")
+    conf.read(path, encoding="UTF-8")
+    return conf["PROFILE"]["AppVersion"]
 
 def resource_path(relative_path):
     if hasattr(sys, '_MEIPASS'):
@@ -27,6 +27,7 @@ class taskTray:
         self.status = False
 
         image = Image.open(resource_path("icon.PNG"))
+        version = read_ini()
         menu = Menu(
             MenuItem(f"Version: {version}", None),
             MenuItem("Exit", self.stop_program),
@@ -46,13 +47,9 @@ def get_config():
     with open("config.json", "r") as f:
         data = json.load(f)
 
-    usr_def = data["Resource"]
+    uid = data["UID"]
     btn_label = data["BtnLabel"]
     btn_url = data["BtnUrl"]
-
-    d_path = rf"{usr_def}\X6Game\Saved\DataBase"
-    files = os.listdir(d_path)
-    uid = re.findall(r"\[(\d+)]", files[0])[0]
 
     if data["UIDVisible"]:
         details = f"UID: {uid}"
@@ -64,16 +61,17 @@ def process_check():
     for proc in psutil.process_iter():
         try:
             get_proc = proc.exe()
-        except psutil.AccessDenied:
+        except (psutil.AccessDenied, psutil.NoSuchProcess):
             pass
         else:
             if "X6Game-Win64-Shipping.exe" in get_proc:
-                return True
+                return proc.pid
     return False
 
 def rpc(details, label, url):
     cid = "1293228317943529483"
     start_time = int(time.time())
+    version = read_ini()
 
     data = [{
         "details": details,
@@ -116,7 +114,7 @@ def log_write(dt, status, app, content):
     logging.basicConfig(filename=log_path, encoding="utf-8", level=logging.INFO, format="[%(asctime)s] %(message)s")
     if status == "ok":
         if app:
-            info_text = f"InfinityNikki is running. Executes an RPC function."
+            info_text = f"InfinityNikki is running(PID: {app}). Executes an RPC function."
         else:
             info_text = f"InfinityNikki is not running. waiting..."
         logger.info(info_text)
@@ -134,8 +132,9 @@ def app_run():
         return
     while True:
         try:
-            if process_check():
-                log_write(dt=dt_now, status="ok", app=True, content=None)
+            pid = process_check()
+            if pid:
+                log_write(dt=dt_now, status="ok", app=pid, content=None)
                 rpc(details, label, url)
             else:
                 log_write(dt=dt_now, status="ok", app=False, content=None)
