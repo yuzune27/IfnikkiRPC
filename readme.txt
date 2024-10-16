@@ -14,7 +14,7 @@ UIDを数字で入力してください。ダブルクォーテーション「""
 
 ["UIDVisible"]
 UIDの表示可否を設定します。「true」または「false」で指定します。
-trueの場合は、Resourceのファイル自動検出でUIDを表示します。
+trueの場合は、UIDをそのまま表示します。
 falseの場合、Discord上には「****」と表示されます。
 
 ["BtnLabel"]
