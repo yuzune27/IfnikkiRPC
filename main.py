@@ -154,9 +154,6 @@ def app_run():
 
 
 if __name__ == "__main__":
-    try:
-        Thread(target=app_run, daemon=True).start()
-        tray = taskTray()
-        tray.run_program()
-    except Exception as e:
-        tray.stop_program(tray.icon)
+    Thread(target=app_run, daemon=True).start()
+    tray = taskTray()
+    tray.run_program()
