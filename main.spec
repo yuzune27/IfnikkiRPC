@@ -17,7 +17,6 @@ a.datas += [('icon.png', '.\\icon.png', 'DATA')]
 pyz = PYZ(a.pure)
 
 exe = EXE(
-    Tree('img', prefix='img'),
     pyz,
     a.scripts,
     a.binaries,
