@@ -11,10 +11,16 @@ import sys
 from datetime import datetime
 import configparser
 
+script_dir = os.path.dirname(os.path.abspath(sys.argv[0]))
+os.chdir(script_dir)
+
 def read_ini():
     conf = configparser.ConfigParser()
-    path = sys.argv[0].replace("ifnikkiRPC.exe", "appinfo.ini")  # .replace("main.py", "appinfo.ini")
-    conf.read(path, encoding="UTF-8")
+    path = f"./setting/appinfo.ini"  # .replace("main.py", "appinfo.ini")
+    if os.path.isfile(path):
+        conf.read(path, encoding="UTF-8")
+    else:
+        conf.read(rf"{script_dir}\appinfo.ini", encoding="UTF-8")
     return conf["PROFILE"]["AppVersion"]
 
 def resource_path(relative_path):
@@ -44,8 +50,12 @@ class taskTray:
         self.icon.run()
 
 def get_config():
-    with open("config.json", "r") as f:
-        data = json.load(f)
+    try:
+        with open(f"./setting/config.json", "r", encoding="UTF-8") as f:
+            data = json.load(f)
+    except FileNotFoundError:
+        with open(rf"{script_dir}\config.json", "r", encoding="UTF-8") as f:
+            data = json.load(f)
 
     uid = data["UID"]
     btn_label = data["BtnLabel"]
@@ -79,7 +89,7 @@ def rpc(details, label, url):
             "start": start_time
         },
         "assets": {
-            "large_image": "ifnikkik",
+            "large_image": "ifnikkik_new",
             "large_text": "ifnikkiRPC",
             "small_image": "ifnsmallk",
             "small_text": version
@@ -110,7 +120,7 @@ def log_write(dt, status, app, content):
     os.makedirs("log", exist_ok=True)
 
     logger = logging.getLogger(__name__)
-    log_path = f"./log/rpc{dt}.log"
+    log_path = rf"{script_dir}\log\rpc{dt}.log"
     logging.basicConfig(filename=log_path, encoding="utf-8", level=logging.INFO, format="[%(asctime)s] %(message)s")
     if status == "ok":
         if app:
@@ -119,7 +129,6 @@ def log_write(dt, status, app, content):
             info_text = f"InfinityNikki is not running. waiting..."
         logger.info(info_text)
     elif status == "error":
-        taskTray().stop_program(taskTray().icon)
         logger.error(f"Unexpected error occurred.\n{content}")
 
 
@@ -145,6 +154,9 @@ def app_run():
 
 
 if __name__ == "__main__":
-    Thread(target=app_run, daemon=True).start()
-    tray = taskTray()
-    tray.run_program()
+    try:
+        Thread(target=app_run, daemon=True).start()
+        tray = taskTray()
+        tray.run_program()
+    except Exception as e:
+        tray.stop_program(tray.icon)
