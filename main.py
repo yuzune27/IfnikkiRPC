@@ -16,7 +16,7 @@ os.chdir(script_dir)
 
 def read_ini():
     conf = configparser.ConfigParser()
-    path = f"./setting/appinfo.ini"  # .replace("main.py", "appinfo.ini")
+    path = f"./settings/appinfo.ini"  # .replace("main.py", "appinfo.ini")
     if os.path.isfile(path):
         conf.read(path, encoding="UTF-8")
     else:
@@ -51,7 +51,7 @@ class taskTray:
 
 def get_config():
     try:
-        with open(f"./setting/config.json", "r", encoding="UTF-8") as f:
+        with open(f"./settings/config.json", "r", encoding="UTF-8") as f:
             data = json.load(f)
     except FileNotFoundError:
         with open(rf"{script_dir}\config.json", "r", encoding="UTF-8") as f:
