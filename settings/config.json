@@ -1,6 +1,8 @@
 {
-  "UID": 901940024,
+  "UID": 123456789,
+  "FriendCode": "fsAaBbCc",
   "UIDVisible": true,
+  "FCVisible": false,
   "BtnLabel": "公式サイト",
   "BtnUrl": "https://infinitynikki.infoldgames.com/ja/home"
 }

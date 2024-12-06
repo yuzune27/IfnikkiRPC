@@ -58,6 +58,7 @@ def get_config():
             data = json.load(f)
 
     uid = data["UID"]
+    fc = data["FriendCode"]
     btn_label = data["BtnLabel"]
     btn_url = data["BtnUrl"]
 
@@ -65,7 +66,13 @@ def get_config():
         details = f"UID: {uid}"
     else:
         details = f"UID: ****"
-    return details, btn_label, btn_url
+
+    if data["FCVisible"]:
+        state = f"FC: {fc}"
+    else:
+        state = f"FC: ****"
+
+    return details, state, btn_label, btn_url
 
 def process_check():
     for proc in psutil.process_iter():
@@ -78,13 +85,14 @@ def process_check():
                 return proc.pid
     return False
 
-def rpc(details, label, url):
+def rpc(details, state, label, url):
     cid = "1293228317943529483"
     start_time = int(time.time())
     version = read_ini()
 
     data = [{
         "details": details,
+        "state": state,
         "timestamps": {
             "start": start_time
         },
@@ -106,8 +114,8 @@ def rpc(details, label, url):
 
         while True:
             if process_check():
-                if (details, label, url) != get_config():
-                    details, label, url = get_config()
+                if (details, state, label, url) != get_config():
+                    details, state, label, url = get_config()
                     data[0]["details"] = details
                     data[0]["buttons"][0]["label"] = label
                     data[0]["buttons"][0]["url"] = url
@@ -135,7 +143,7 @@ def log_write(dt, status, app, content):
 def app_run():
     dt_now = datetime.now().strftime("%Y%m%d%H%M%S%f")
     try:
-        details, label, url = get_config()
+        details, state, label, url = get_config()
     except Exception as e:
         log_write(dt=dt_now, status="error", app=None, content=e)
         return
@@ -144,7 +152,7 @@ def app_run():
             pid = process_check()
             if pid:
                 log_write(dt=dt_now, status="ok", app=pid, content=None)
-                rpc(details, label, url)
+                rpc(details, state, label, url)
             else:
                 log_write(dt=dt_now, status="ok", app=False, content=None)
             time.sleep(15)
