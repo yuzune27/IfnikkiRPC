@@ -10,6 +10,8 @@ from threading import Thread
 import sys
 from datetime import datetime
 import configparser
+import requests
+import webbrowser
 
 script_dir = os.path.dirname(os.path.abspath(sys.argv[0]))
 
@@ -22,6 +24,13 @@ def read_ini():
         conf.read(rf"{script_dir}\appinfo.ini", encoding="UTF-8")
     return conf["PROFILE"]["AppVersion"]
 
+def read_server_ini():
+    url = "https://raw.githubusercontent.com/yuzune27/IfnikkiRPC/refs/heads/master/settings/appinfo.ini"
+    r = requests.get(url)
+    conf = configparser.ConfigParser()
+    conf.read_string(r.text)
+    return conf["PROFILE"]["AppVersion"]
+
 def resource_path(relative_path):
     if hasattr(sys, '_MEIPASS'):
         return os.path.join(sys._MEIPASS, relative_path)
@@ -32,13 +41,26 @@ class taskTray:
         self.status = False
 
         image = Image.open(resource_path("icon.PNG"))
-        version = read_ini()
+
+        local_version = read_ini()
+        server_version = read_server_ini()
+
+        if local_version != server_version:
+            visible = True
+        else:
+            visible = False
+
         menu = Menu(
-            MenuItem(f"Version: {version}", None),
+            MenuItem(f"Update is available! (->v{server_version})", self.open_gitpage, visible=visible),
+            MenuItem(f"Version: {local_version}", enabled=False, action=None),
             MenuItem("Exit", self.stop_program),
         )
 
         self.icon = Icon(name="ifnikkiRPC", title="ifnikkiRPC", icon=image, menu=menu)
+
+    def open_gitpage(self):
+        url = "https://github.com/yuzune27/IfnikkiRPC/releases"
+        webbrowser.open(url)
 
     def stop_program(self, icon):
         self.status = False
@@ -56,6 +78,8 @@ def get_config():
         with open(rf"{script_dir}\config.json", "r", encoding="UTF-8") as f:
             data = json.load(f)
 
+    lang = data["Lang"]
+    player = data["Player"]
     uid = data["UID"]
     fc = data["FriendCode"]
     btn_label = data["BtnLabel"]
@@ -71,7 +95,7 @@ def get_config():
     else:
         state = f"FC: ****"
 
-    return details, state, btn_label, btn_url
+    return lang, player, details, state, btn_label, btn_url
 
 def process_check():
     for proc in psutil.process_iter():
@@ -80,14 +104,25 @@ def process_check():
         except (psutil.AccessDenied, psutil.NoSuchProcess):
             pass
         else:
-            if "X6Game-Win64-Shipping.exe" in get_proc:
+            if "X6Game-Win64-Shipping.exe" in get_proc:  # Debug -> pycharm64.exe
                 return proc.pid
     return False
 
-def rpc(details, state, label, url):
-    cid = "1293228317943529483"
+def lang_to_cid(lang):
+    if lang == "ja":
+        cid = "1293228317943529483"
+    elif lang == "en":
+        cid = "1314912127919853669"
+    else:
+        cid = "1293228317943529483"
+
+    return cid
+
+def rpc(lang, player, details, state, label, url):
     start_time = int(time.time())
     version = read_ini()
+
+    cid = lang_to_cid(lang)
 
     data = [{
         "details": details,
@@ -97,9 +132,9 @@ def rpc(details, state, label, url):
         },
         "assets": {
             "large_image": "ifnikkik_new",
-            "large_text": "ifnikkiRPC",
+            "large_text": "ifnikkiRPC v" + version,
             "small_image": "ifnsmallk",
-            "small_text": version
+            "small_text": player
         },
         "buttons": [
             {
@@ -108,13 +143,14 @@ def rpc(details, state, label, url):
             }
         ]
     }, ]
+
     with Presence(cid) as presence:
         presence.set(data[0])
-
         while True:
             if process_check():
-                if (details, state, label, url) != get_config():
-                    details, state, label, url = get_config()
+                if (lang, player, details, state, label, url) != get_config():
+                    lang, player, details, state, label, url = get_config()
+                    data[0]["assets"]["small_text"] = player
                     data[0]["details"] = details
                     data[0]["state"] = state
                     data[0]["buttons"][0]["label"] = label
@@ -143,7 +179,7 @@ def log_write(dt, status, app, content):
 def app_run():
     dt_now = datetime.now().strftime("%Y%m%d%H%M%S%f")
     try:
-        details, state, label, url = get_config()
+        lang, player, details, state, label, url = get_config()
     except Exception as e:
         log_write(dt=dt_now, status="error", app=None, content=e)
         return
@@ -152,7 +188,7 @@ def app_run():
             pid = process_check()
             if pid:
                 log_write(dt=dt_now, status="ok", app=pid, content=None)
-                rpc(details, state, label, url)
+                rpc(lang, player, details, state, label, url)
             else:
                 log_write(dt=dt_now, status="ok", app=False, content=None)
             time.sleep(15)
