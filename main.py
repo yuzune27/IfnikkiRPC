@@ -12,11 +12,10 @@ from datetime import datetime
 import configparser
 
 script_dir = os.path.dirname(os.path.abspath(sys.argv[0]))
-os.chdir(script_dir)
 
 def read_ini():
     conf = configparser.ConfigParser()
-    path = f"./settings/appinfo.ini"  # .replace("main.py", "appinfo.ini")
+    path = "./settings/appinfo.ini"  # .replace("main.py", "appinfo.ini")
     if os.path.isfile(path):
         conf.read(path, encoding="UTF-8")
     else:
@@ -51,7 +50,7 @@ class taskTray:
 
 def get_config():
     try:
-        with open(f"./settings/config.json", "r", encoding="UTF-8") as f:
+        with open("./settings/config.json", "r", encoding="UTF-8") as f:
             data = json.load(f)
     except FileNotFoundError:
         with open(rf"{script_dir}\config.json", "r", encoding="UTF-8") as f:
@@ -117,6 +116,7 @@ def rpc(details, state, label, url):
                 if (details, state, label, url) != get_config():
                     details, state, label, url = get_config()
                     data[0]["details"] = details
+                    data[0]["state"] = state
                     data[0]["buttons"][0]["label"] = label
                     data[0]["buttons"][0]["url"] = url
                     presence.set(data[0])
