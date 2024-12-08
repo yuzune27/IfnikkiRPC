@@ -32,6 +32,23 @@ Enter the stylist ID (UID) as a **number**. Double quotation marks (`""`) are no
 
 ## FriendCode
 Please enter the friend code as a **string**.
+<details>
+<summary>Tip</summary>
+Infinity Nikki's friend codes are designed to be used by only one person per code.<br>
+On the other hand, if one wanted to recruit multiple friends, listing all the letters of all the friend codes would be difficult for others to read (and in some cases could result in a program error due to the character limit).<br>
+Therefore, to reduce the number of characters, we propose the following abbreviated notation.
+
+```text
+"fsAaBb** AB/Ah/kd/k2"
+"fsAaBbC* S/a/3/h/H"
+```
+
+This takes advantage of the fact that the **last one or two characters of the string are fixed** when the friend code is issued all at once in a short period of time (verification required).<br>
+The “ `*` (`**`) ” part can be replaced by the string of characters separated by a slash on the right.<br>
+
+（This is only my suggestion and does not necessarily mandate this action.）
+</details>
+
 
 ## UIDVisible
 Set whether to display UID.<br>
