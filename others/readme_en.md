@@ -6,7 +6,7 @@
 # Overview
 This program detects the startup of **Infinity Nikki** and displays it in the Discord activity. <br>
 Currently supports **Display of Stylist ID (UID) and Friend Code (FC)**. (can also be set to hidden)<br>
-The application is stored in the task tray and you can exit the program by pressing the right-click Exit button.<br>
+The application is stored in the task tray, and you can exit the program by pressing the right-click Exit button.<br>
 The status of the application is written in a **log file** in the log folder.
 
 # Activity Settings
@@ -43,10 +43,10 @@ Therefore, to reduce the number of characters, I propose the following abbreviat
 "fsAaBbC* S/a/3/h/H"
 ```
 
-This takes advantage of the fact that the **last one or two characters of the string are fixed** when the friend code is issued all at once in a short period of time (verification required).<br>
+This takes advantage of the fact that when friend codes are issued all at once in a short period of time, all but the last one or two characters of the string are fixed.<br>
 The “ `*` (`**`) ” part can be replaced by the string of characters separated by a slash on the right.<br>
 
-（This is only my suggestion and does not necessarily mandate this action.）
+（This is just my suggestion and does not necessarily force this behavior on you.）
 </details>
 
 
