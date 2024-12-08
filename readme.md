@@ -1,6 +1,6 @@
 # IfNikkiRPC
 
-![Discord Rich Presence](./img/rpc.PNG)
+![Discord Rich Presence](./img/rpc_new.PNG)
 
 English Document (→[readme_en.md](./others/readme_en.md))
 

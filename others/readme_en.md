@@ -1,6 +1,6 @@
 # IfNikkiRPC
 
-![Discord Rich Presence](../img/rpc.PNG)
+![Discord Rich Presence](../img/rpc_new_en.PNG)
 
 
 # Overview
