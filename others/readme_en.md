@@ -36,7 +36,7 @@ Please enter the friend code as a **string**.
 <summary>Tip</summary>
 Infinity Nikki's friend codes are designed to be used by only one person per code.<br>
 On the other hand, if one wanted to recruit multiple friends, listing all the letters of all the friend codes would be difficult for others to read (and in some cases could result in a program error due to the character limit).<br>
-Therefore, to reduce the number of characters, we propose the following abbreviated notation.
+Therefore, to reduce the number of characters, I propose the following abbreviated notation.
 
 ```text
 "fsAaBb** AB/Ah/kd/k2"
