@@ -16,10 +16,10 @@ There is no GUI, so please open the **config.json** included in the folder with 
 Set the language as a **string**. The set language will be reflected in the game title.<br>
 
 ### Supported Languages
-|     Language      | Value |
-|:-----------:|:-----:|
-|   **日本語**   |  ja   |
-| **English** |  en   |
+|   Language   | Value |
+|:------------:|:-----:|
+|   **日本語**    |  ja   |
+| **English**  |  en   |
 
 <INS>If this setting is changed, the application must be restarted.</INS>
 
@@ -43,7 +43,7 @@ If `false`, the UID will be displayed as __****__ on the Discord.
 Set whether to display friend code.<br>
 Specify with `true` or `false`.<br>
 If `true`, the friend code is displayed as it is.<br>
-If `false`, the UID will be displayed as __****__ on the Discord.
+If `false`, the friend code will be displayed as __****__ on the Discord.
 
 ## BtnLabel
 Set the **Button Name** of the Discord activity.
@@ -54,14 +54,14 @@ Set the **Button URL** for the Discord activity.
 ## Example
 ```json
 {
-  "Lang": "ja",
+  "Lang": "en",
   "Player": "Name",
   "UID": 123456789,
   "FriendCode": "fsAaBbCc",
   "UIDVisible": true,
   "FCVisible": false,
-  "BtnLabel": "公式サイト",
-  "BtnUrl": "https://infinitynikki.infoldgames.com/ja/home"
+  "BtnLabel": "Official Site",
+  "BtnUrl": "https://infinitynikki.infoldgames.com/en/home"
 }
 ```
 
